@@ -1,0 +1,214 @@
+﻿:root {
+  --bg: #eef3ff;
+  --surface: #ffffff;
+  --surface-soft: #f4f7ff;
+  --accent: #3464f0;
+  --accent-soft: #8da7ff;
+  --text: #15253f;
+  --muted: #55637c;
+  --border: rgba(52,100,240,.18);
+  --shadow: 0 18px 50px rgba(20,56,110,.12);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0 auto;
+  max-width: 1280px;
+  min-height: 100vh;
+  padding: 24px 0;
+  background: radial-gradient(circle at bottom, #ffe600 0%, #adecffb0 42%, #0065fc 100%);
+  font-size: 1.1rem;
+  font-family: "Roboto", sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+header {
+  background: linear-gradient(180deg, rgba(52, 127, 240, 0.95), rgba(42, 75, 166, 0.98));
+  margin: 20px auto;
+  width: 80%;
+  border-radius: 22px;
+  padding: 70px 24px;
+  text-align: center;
+  color: #fff;
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top center, rgba(255,255,255,.18), transparent 42%);
+  pointer-events: none;
+}
+
+header p {
+  margin: 16px auto;
+  max-width: 760px;
+  line-height: 1.7;
+  font-weight: 400;
+  color: rgba(255,255,255,.88);
+}
+
+h1 {
+  font-size: clamp(2.6rem, 6vw, 4.6rem);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+#cityForm {
+  text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  margin: 20px auto;
+  width: 80%;
+  border-radius: 22px;
+  padding: 24px 18px;
+  box-shadow: var(--shadow);
+}
+
+#cityForm_form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+#cityForm_form input,
+#cityForm_form select {
+  width: 100%;
+  max-width: 420px;
+  min-width: 260px;
+  padding: 14px 16px;
+  border: 1px solid rgba(84,116,220,.25);
+  border-radius: 14px;
+  background: var(--surface-soft);
+  color: var(--text);
+  font-size: 1rem;
+  transition: border-color .3s ease, box-shadow .3s ease;
+  box-shadow: inset 0 2px 8px rgba(52,100,240,.06);
+}
+
+#cityForm_form input:focus,
+#cityForm_form select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(52,100,240,.12);
+}
+
+#communeSelect {
+  display: none;
+  z-index: 999;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+#validationButton,
+.reloadButton {
+  margin: 20px auto;
+  padding: 12px 24px;
+  background: var(--accent);
+  color: #fff;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: transform .25s ease, background .25s ease, box-shadow .25s ease;
+  box-shadow: 0 14px 30px rgba(52,100,240,.16);
+}
+
+#validationButton:hover,
+.reloadButton:hover {
+  background: transparent;
+  color: var(--accent);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+  box-shadow: 0 20px 36px rgba(52,100,240,.18);
+}
+
+#validationButton:active,
+.reloadButton:active {
+  transform: translateY(0);
+}
+
+.errorMessage {
+  color: #db3b3b;
+  text-align: center;
+  font-size: 0.98rem;
+  font-weight: 700;
+  margin-top: 10px;
+}
+
+#weatherInformation {
+  display: none;
+  justify-content: space-between;
+  align-items: stretch;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  margin: 20px auto;
+  width: 80%;
+  border-radius: 22px;
+  padding: 24px;
+  gap: 18px;
+  box-shadow: var(--shadow);
+}
+
+#weatherInformation div {
+  flex: 1;
+  text-align: center;
+  min-height: 80px;
+  padding: 22px 18px;
+  background: linear-gradient(180deg, #f7faff 0%, #e9efff 100%);
+  color: var(--text);
+  border-radius: 16px;
+  box-shadow: 0 12px 26px rgba(20,56,110,.08);
+}
+
+@media screen and (max-width: 1024px) {
+  #weatherInformation {
+    flex-direction: column;
+  }
+
+  #weatherInformation div {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  header,
+  #cityForm,
+  #weatherInformation {
+    width: 95%;
+    margin: 12px auto;
+    padding: 20px 14px;
+  }
+
+  #cityForm_form input,
+  #cityForm_form select {
+    max-width: 100%;
+    min-width: 0;
+  }
+}
