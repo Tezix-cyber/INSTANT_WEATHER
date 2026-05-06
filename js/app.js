@@ -3,7 +3,7 @@ async function oui(CodePostal) {
     const data = await response.json() 
     console.log(data)
 }
-
+// Favicon.js
 oui(50440)
 const faviconAnimation = (() => {
   const favicon = document.querySelector('link[rel="icon"]') || document.createElement("link");
