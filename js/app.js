@@ -105,4 +105,3 @@ const faviconAnimation = (() => {
   animate();
   return window.setInterval(animate, 850);
 })();
->>>>>>> d22b68d (Ajout Matthieu JS et CSS)
