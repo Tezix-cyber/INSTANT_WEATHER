@@ -6,7 +6,6 @@ const URL_COMMUNES = "https://geo.api.gouv.fr/communes";
 // Éléments de la page
 const champCodePostal = document.querySelector("#code-postal");
 const choixCommune = document.querySelector("#communeSelect");
-const boutonValider = document.querySelector("#validationButton");
 const formulaire = document.querySelector("#cityForm_form");
 const blocMeteo = document.querySelector("#weatherInformation");
 let delaiRecherche;
@@ -14,7 +13,7 @@ let delaiRecherche;
 // Affiche un message dans la zone météo
 function afficherMessageMeteo(message, erreur = false) {
   blocMeteo.innerHTML = `<p class="${erreur ? "errorMessage" : ""}">${message}</p>`;
-  blocMeteo.style.display = "flex";
+  blocMeteo.style.display = "grid";
 }
 
 // Remplace le contenu de la liste des communes
@@ -28,11 +27,12 @@ function afficherOptionCommune(message) {
 }
 
 // Crée une petite carte d'information météo
-function creerCarteMeteo(titre, valeur) {
+function creerCarteMeteo(titre, valeur, classe = "") {
   const carte = document.createElement("div");
   const sousTitre = document.createElement("h3");
   const texte = document.createElement("p");
 
+  carte.className = classe ? `carte-meteo ${classe}` : "carte-meteo";
   sousTitre.textContent = titre;
   texte.textContent = valeur;
   carte.append(sousTitre, texte);
@@ -53,6 +53,29 @@ function nomMeteo(codeMeteo) {
   if (codeMeteo === 235) return "Grêle";
 
   return "Météo inconnue";
+}
+
+// Choisit le fond de page selon la météo
+function themeMeteo(codeMeteo) {
+  if (codeMeteo === 0) return "soleil";
+  if ([1, 2].includes(codeMeteo)) return "eclaircies";
+  if ([3, 4, 5].includes(codeMeteo)) return "nuageux";
+  if ([6, 7].includes(codeMeteo)) return "brouillard";
+  if ([10, 11, 12, 13, 14, 15, 16, 40, 41, 42, 43, 44, 45, 46, 47, 48, 210, 211, 212].includes(codeMeteo)) return "pluie";
+  if ([20, 21, 22, 60, 61, 62, 63, 64, 65, 66, 67, 68, 220, 221, 222].includes(codeMeteo)) return "neige";
+  if ([30, 31, 32, 70, 71, 72, 73, 74, 75, 76, 77, 78, 141, 230, 231, 232].includes(codeMeteo)) return "neige";
+  if (codeMeteo >= 100 && codeMeteo <= 142) return "orage";
+  if (codeMeteo === 235) return "pluie";
+
+  return "soleil";
+}
+
+// Applique le fond météo sur la page
+function changerFondMeteo(codeMeteo) {
+  const themes = ["meteo-soleil", "meteo-eclaircies", "meteo-nuageux", "meteo-brouillard", "meteo-pluie", "meteo-neige", "meteo-orage"];
+
+  document.body.classList.remove(...themes);
+  document.body.classList.add(`meteo-${themeMeteo(codeMeteo)}`);
 }
 
 // Convertit les dates renvoyées par Meteo Concept
@@ -114,11 +137,12 @@ function afficherMeteo(meteo) {
   const prevision = meteo.forecast;
   const miseAJour = meteo.update;
 
+  changerFondMeteo(prevision.weather);
   blocMeteo.innerHTML = "";
-  blocMeteo.style.display = "flex";
+  blocMeteo.style.display = "grid";
 
   blocMeteo.append(
-    creerCarteMeteo(`${ville.name} - ${formaterDate(prevision.datetime)}`, nomMeteo(prevision.weather)),
+    creerCarteMeteo(`${ville.name} - ${formaterDate(prevision.datetime)}`, nomMeteo(prevision.weather), `carte-principale temps-${themeMeteo(prevision.weather)}`),
     creerCarteMeteo("Températures", `${prevision.tmin}°C min / ${prevision.tmax}°C max`),
     creerCarteMeteo("Pluie", `${prevision.probarain}% de risque - ${prevision.rr10} mm prévus`),
     creerCarteMeteo("Vent", `${prevision.wind10m} km/h moyen - rafales ${prevision.gust10m} km/h`),
@@ -198,9 +222,6 @@ champCodePostal.addEventListener("input", () => {
   window.clearTimeout(delaiRecherche);
   delaiRecherche = window.setTimeout(chercherCommunes, 350);
 });
-
-// Validation avec le bouton
-boutonValider.addEventListener("click", validerCommune);
 
 afficherOptionCommune("Entrez un code postal");
 

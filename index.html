@@ -19,13 +19,30 @@
     </header>
     <main>
         <section id="cityForm">
-            <form id="cityForm_form" action="dummy">
-                <label for="code-postal">Saisissez un code postal</label>
-                <input type="text" id="code-postal" placeholder="Entrez un code postal..." />
-                <label for="communeSelect" >Sélectionnez la commune</label>
-                <select id="communeSelect"></select>
+            <form id="cityForm_form">
+                <div class="champ-formulaire">
+                    <label for="code-postal">Code postal</label>
+                    <input
+                        type="text"
+                        id="code-postal"
+                        name="code-postal"
+                        inputmode="numeric"
+                        maxlength="5"
+                        pattern="[0-9]{5}"
+                        autocomplete="postal-code"
+                        placeholder="Ex : 50440"
+                    />
+                </div>
+
+                <div class="champ-formulaire">
+                    <label for="communeSelect">Commune</label>
+                    <select id="communeSelect" name="commune">
+                        <option value="">Entrez un code postal</option>
+                    </select>
+                </div>
+
+                <button type="submit" id="validationButton">Valider</button>
             </form>
-            <button id="validationButton">Valider</button>
         </section>
         <section id="weatherInformation">
             <!-- Ajouter les informations météo ici -->
