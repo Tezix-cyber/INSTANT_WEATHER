@@ -1,8 +1,3 @@
-async function oui(CodePostal) {
-    const response = await fetch("https://geo.api.gouv.fr/communes?codePostal="+CodePostal)
-    const data = await response.json() 
-    console.log(data)
-}
 // Favicon.js
 oui(50440)
 const faviconAnimation = (() => {
@@ -105,3 +100,12 @@ const faviconAnimation = (() => {
   animate();
   return window.setInterval(animate, 850);
 })();
+
+
+
+
+async function oui(CodePostal) {
+    const response = await fetch("https://geo.api.gouv.fr/communes?codePostal="+CodePostal)
+    const data = await response.json() 
+    console.log(data)
+}
