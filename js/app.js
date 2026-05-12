@@ -1,5 +1,65 @@
+
+
+// Sélection des éléments
+const codePostalInput = document.getElementById("code-postal");
+const communeSelect = document.getElementById("communeSelect");
+const validationButton = document.getElementById("validationButton");
+const communeLabel = document.querySelector('label[for="communeSelect"]');
+
+// Masquer le label initialement
+communeLabel.style.display = "none";
+
+// Fonction pour effectuer la requête API des communes en utilisant le code postal
+async function DictWithCP(codePostal) {
+    const response = await fetch(
+      `https://geo.api.gouv.fr/communes?codePostal=${codePostal}`
+    );
+    const data = await response.json();
+    console.table(data);
+    return data;
+}
+
+
+// Fonction pour afficher les communes dans la liste déroulante
+function showCommunes(data) {
+  communeSelect.innerHTML = "";
+  // S'il y a au moins une commune retournée dans data
+  if (data.length) {
+    data.forEach((commune) => {
+      const option = document.createElement("option");
+      option.value = commune.code;
+      option.textContent = commune.nom;
+      communeSelect.appendChild(option);
+    });
+    communeSelect.style.display = "block";
+    validationButton.style.display = "block";
+  }   
+  else {
+
+    // Masquer les éléments inutiles et rechager la page après 2 secondes
+    communeSelect.style.display = "none";
+    validationButton.style.display = "none";  
+    setTimeout(() => location.reload(), 2000);
+  }
+}
+
+// Ajout de l'écouteur d'événement "input" sur le champ code postal
+codePostalInput.addEventListener("input", async () => {
+  const codePostal = codePostalInput.value;
+  communeSelect.style.display = "none";
+  validationButton.style.display = "none";
+
+  if (codePostal.length === 5) {
+    communeLabel.style.display = "block";
+    const data = await DictWithCP(codePostal);
+    showCommunes(data);
+  } else {
+    communeLabel.style.display = "none";
+  }
+});
+
+
 // Favicon.js
-oui(50440)
 const faviconAnimation = (() => {
   const favicon = document.querySelector('link[rel="icon"]') || document.createElement("link");
   const canvas = document.createElement("canvas");
@@ -101,11 +161,3 @@ const faviconAnimation = (() => {
   return window.setInterval(animate, 850);
 })();
 
-
-
-
-async function oui(CodePostal) {
-    const response = await fetch("https://geo.api.gouv.fr/communes?codePostal="+CodePostal)
-    const data = await response.json() 
-    console.log(data)
-}
