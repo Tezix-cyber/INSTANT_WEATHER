@@ -10,6 +10,12 @@ const formulaire = document.querySelector("#cityForm_form");
 const blocMeteo = document.querySelector("#weatherInformation");
 let delaiRecherche;
 
+// Quitte l'affichage météo seul sur mobile
+function revenirRecherche() {
+  document.body.classList.remove("meteo-mobile-visible");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
 // Affiche un message dans la zone météo
 function afficherMessageMeteo(message, erreur = false) {
   blocMeteo.innerHTML = `<p class="${erreur ? "errorMessage" : ""}">${message}</p>`;
@@ -38,6 +44,18 @@ function creerCarteMeteo(titre, valeur, classe = "") {
   carte.append(sousTitre, texte);
 
   return carte;
+}
+
+// Crée le bouton de retour affiché avec les résultats sur mobile
+function creerBoutonRetour() {
+  const bouton = document.createElement("button");
+
+  bouton.type = "button";
+  bouton.className = "retourButton";
+  bouton.textContent = "Retour";
+  bouton.addEventListener("click", revenirRecherche);
+
+  return bouton;
 }
 
 // Transforme le code météo en texte simple
@@ -142,6 +160,7 @@ function afficherMeteo(meteo) {
   blocMeteo.style.display = "grid";
 
   blocMeteo.append(
+    creerBoutonRetour(),
     creerCarteMeteo(`${ville.name} - ${formaterDate(prevision.datetime)}`, nomMeteo(prevision.weather), `carte-principale temps-${themeMeteo(prevision.weather)}`),
     creerCarteMeteo("Températures", `${prevision.tmin}°C min / ${prevision.tmax}°C max`),
     creerCarteMeteo("Pluie", `${prevision.probarain}% de risque - ${prevision.rr10} mm prévus`),
@@ -149,6 +168,8 @@ function afficherMeteo(meteo) {
     creerCarteMeteo("Soleil", `${prevision.sun_hours} h d'ensoleillement`),
     creerCarteMeteo("Mise à jour", lireDateMeteo(miseAJour).toLocaleString("fr-FR"))
   );
+  document.body.classList.add("meteo-mobile-visible");
+  blocMeteo.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 // Recherche les communes quand le code postal change

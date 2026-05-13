@@ -482,7 +482,8 @@ main {
 }
 
 #validationButton,
-.reloadButton {
+.reloadButton,
+.retourButton {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -505,16 +506,22 @@ main {
 }
 
 #validationButton:hover,
-.reloadButton:hover {
+.reloadButton:hover,
+.retourButton:hover {
   filter: brightness(1.04);
   transform: translateY(-2px);
   box-shadow: 0 18px 34px rgba(31, 115, 209, 0.28);
 }
 
 #validationButton:active,
-.reloadButton:active {
+.reloadButton:active,
+.retourButton:active {
   transform: translateY(0);
   box-shadow: 0 10px 20px rgba(31, 115, 209, 0.22);
+}
+
+.retourButton {
+  display: none;
 }
 
 .errorMessage {
@@ -603,20 +610,25 @@ main {
   box-shadow: 0 18px 34px rgba(31, 43, 64, 0.34);
 }
 
-#weatherInformation .carte-meteo:nth-child(3n + 2) {
+#weatherInformation .carte-meteo:nth-of-type(3n + 2) {
   border-top: 4px solid var(--rain);
 }
 
-#weatherInformation .carte-meteo:nth-child(3n + 3) {
+#weatherInformation .carte-meteo:nth-of-type(3n + 3) {
   border-top: 4px solid var(--fresh);
 }
 
-#weatherInformation .carte-meteo:nth-child(3n + 4) {
+#weatherInformation .carte-meteo:nth-of-type(3n + 4) {
   border-top: 4px solid var(--sun);
 }
 
 #weatherInformation .carte-principale {
   border-top: 0;
+}
+
+#weatherInformation .retourButton {
+  grid-column: 1 / -1;
+  width: 100%;
 }
 
 #weatherInformation h2,
@@ -713,6 +725,23 @@ main {
     opacity: 0.68;
   }
 
+  body.meteo-mobile-visible header,
+  body.meteo-mobile-visible #cityForm {
+    display: none;
+  }
+
+  body.meteo-mobile-visible main {
+    min-height: 100vh;
+    padding-block: 12px 24px;
+  }
+
+  body.meteo-mobile-visible #weatherInformation {
+    display: grid;
+  }
+
+  body.meteo-mobile-visible .retourButton {
+    display: inline-flex;
+  }
 }
 
 @media screen and (max-width: 425px) {
